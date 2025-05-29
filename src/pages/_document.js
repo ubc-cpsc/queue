@@ -4,7 +4,7 @@ import Document, { Head, Main, NextScript } from 'next/document'
 import flush from 'styled-jsx/server'
 import { dom } from '@fortawesome/fontawesome-svg-core'
 import moment from 'moment'
-import nextCookies from 'next-cookies'
+import { parse } from 'cookie'
 import getConfig from 'next/config'
 
 import { baseUrl, isDev } from '../util'
@@ -17,7 +17,9 @@ export default class MyDocument extends Document {
     // This cookie is set on the client; we read it here to know if we should
     // render the body with the 'darkmode' class on the server to avoid a flash
     // of white background if darkmode is enabled
-    const { darkmode } = nextCookies(ctx)
+    const cookieHeader = ctx.req?.headers?.cookie ?? ''
+    const cookies = parse(cookieHeader)
+    const { darkmode } = cookies
     const isDarkMode = darkmode === 'true'
     const styles = flush()
     return {

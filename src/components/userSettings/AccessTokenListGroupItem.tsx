@@ -20,14 +20,16 @@ interface AdminTokenListGroupItemProps {
 }
 
 const AccessTokenListGroupItem = (props: AdminTokenListGroupItemProps) => {
-  const inputRef = useRef<HTMLInputElement>() as React.RefObject<
-    HTMLInputElement
-  >
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const copyValue = (e: React.MouseEvent) => {
+  const copyValue = async (e: React.MouseEvent) => {
     if (inputRef.current) {
       inputRef.current.select()
-      document.execCommand('copy')
+      try {
+        await navigator.clipboard.writeText(inputRef.current.value)
+      } catch (err) {
+        // Optionally handle clipboard errors here
+      }
       ;(e.target as HTMLButtonElement).focus()
     }
   }

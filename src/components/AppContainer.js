@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { PageTransition } from 'next-page-transitions'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { ToastContainer, Flip } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -16,20 +16,15 @@ const AppContainer = props => {
     <Fragment>
       <ToastContainer transition={Flip} hideProgressBar autoClose={3000} />
       <Header />
-      <PageTransition
-        timeout={TIMEOUT}
-        classNames="page-transition"
-        loadingComponent={<Loading />}
-        loadingDelay={500}
-        loadingTimeout={{
-          enter: 200,
-          exit: 0,
-        }}
-        loadingClassNames="indicator"
-        monkeyPatchScrolling
-      >
-        {props.children}
-      </PageTransition>
+      <TransitionGroup component={null}>
+        <CSSTransition
+          key={props.router?.route || 'page'}
+          timeout={TIMEOUT}
+          classNames="page-transition"
+        >
+          <div>{props.children}</div>
+        </CSSTransition>
+      </TransitionGroup>
       <Footer />
       <style global jsx>{`
         html {
