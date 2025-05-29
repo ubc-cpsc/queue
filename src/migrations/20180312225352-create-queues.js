@@ -1,49 +1,47 @@
-module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('queues', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
+export function up(queryInterface, Sequelize) {
+  return queryInterface.createTable('queues', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
+    },
+    name: Sequelize.TEXT,
+    location: Sequelize.TEXT,
+    startTime: Sequelize.DATE,
+    endTime: Sequelize.DATE,
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+    deletedAt: {
+      type: Sequelize.DATE,
+    },
+    courseId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'courses',
+        key: 'id',
       },
-      name: Sequelize.TEXT,
-      location: Sequelize.TEXT,
-      startTime: Sequelize.DATE,
-      endTime: Sequelize.DATE,
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
+      onUpdate: 'cascade',
+      onDelete: 'set null',
+    },
+    createdByUserId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id',
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      deletedAt: {
-        type: Sequelize.DATE,
-      },
-      courseId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'courses',
-          key: 'id',
-        },
-        onUpdate: 'cascade',
-        onDelete: 'set null',
-      },
-      createdByUserId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-        onUpdate: 'cascade',
-        onDelete: 'set null',
-      },
-    })
-  },
+      onUpdate: 'cascade',
+      onDelete: 'set null',
+    },
+  })
+}
 
-  down: (queryInterface, _Sequelize) => {
-    return queryInterface.dropTable('queues')
-  },
+export function down(queryInterface, _Sequelize) {
+  return queryInterface.dropTable('queues')
 }

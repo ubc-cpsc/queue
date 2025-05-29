@@ -1,10 +1,12 @@
-const router = require('express').Router()
+import express from 'express'
+import { User, Sequelize } from '../models'
+import util from './util'
+import requireAdmin from '../middleware/requireAdmin'
+import safeAsync from '../middleware/safeAsync'
 
-const { User, Sequelize } = require('../models')
+const { failIfErrors, ApiError } = util
 
-const { failIfErrors, ApiError } = require('./util')
-const requireAdmin = require('../middleware/requireAdmin')
-const safeAsync = require('../middleware/safeAsync')
+const router = express.Router()
 
 router.get(
   '/users',
@@ -29,4 +31,4 @@ router.get(
   })
 )
 
-module.exports = router
+export default router

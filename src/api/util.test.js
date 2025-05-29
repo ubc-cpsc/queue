@@ -1,6 +1,6 @@
 /* eslint-env jest */
 const testutil = require('../test/util')
-const util = require('./util')
+const util = require('./util').default
 
 beforeAll(async () => {
   await testutil.setupTestDb()

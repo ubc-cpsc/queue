@@ -1,6 +1,6 @@
-const { withBaseUrl, isDev } = require('../util')
+import { withBaseUrl, isDev } from '../util'
 
-module.exports = (req, res) => {
+export default (req, res) => {
   res.clearCookie('jwt')
   // When we're running in prod, do another redirect to Shib to complete the
   // signout process. Locally, just send them back to the login page.

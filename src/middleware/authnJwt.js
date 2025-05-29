@@ -1,8 +1,8 @@
-const { ApiError } = require('../api/util')
-const safeAsync = require('../middleware/safeAsync')
-const { getUserFromJwt, addJwtCookie } = require('../auth/util')
+import { ApiError } from '../api/util'
+import safeAsync from '../middleware/safeAsync'
+import { getUserFromJwt, addJwtCookie } from '../auth/util'
 
-module.exports = safeAsync(async (req, res, next) => {
+export default safeAsync(async (req, res, next) => {
   if (res.locals.userAuthn) {
     // Something else in the chain already handled authn
     next()

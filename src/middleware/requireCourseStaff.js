@@ -1,6 +1,6 @@
-const { ApiError } = require('../api/util')
+import { ApiError } from '../api/util'
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
   if (!req.params.courseId) {
     // Missing courseId in request
     next(new ApiError(400, 'Invalid course ID'))

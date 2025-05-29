@@ -1,44 +1,42 @@
-module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('activeStaff', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER,
+export function up(queryInterface, Sequelize) {
+  return queryInterface.createTable('activeStaff', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER,
+    },
+    startTime: Sequelize.DATE,
+    endTime: Sequelize.DATE,
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE,
+    },
+    userId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id',
       },
-      startTime: Sequelize.DATE,
-      endTime: Sequelize.DATE,
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
+      onUpdate: 'cascade',
+      onDelete: 'set null',
+    },
+    queueId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'queues',
+        key: 'id',
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      userId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-        onUpdate: 'cascade',
-        onDelete: 'set null',
-      },
-      queueId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'queues',
-          key: 'id',
-        },
-        onUpdate: 'cascade',
-        onDelete: 'set null',
-      },
-    })
-  },
+      onUpdate: 'cascade',
+      onDelete: 'set null',
+    },
+  })
+}
 
-  down: (queryInterface, _Sequelize) => {
-    return queryInterface.dropTable('activeStaff')
-  },
+export function down(queryInterface, _Sequelize) {
+  return queryInterface.dropTable('activeStaff')
 }

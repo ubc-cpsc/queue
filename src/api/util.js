@@ -1,6 +1,6 @@
-const { validationResult } = require('express-validator/check')
+import { validationResult } from 'express-validator/check'
 
-const { Course, Queue, Question, User } = require('../models')
+import { Course, Queue, Question, User } from '../models'
 
 class ApiError extends Error {
   constructor(httpStatusCode, message) {
@@ -87,7 +87,7 @@ const filterConfidentialQueueQuestionsForUser = (userId, questions) => {
   })
 }
 
-module.exports = {
+export default {
   ApiError,
   failIfErrors(req, res, next) {
     const errors = validationResult(req)

@@ -20,7 +20,7 @@ import Switch from 'react-switch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
 
-import { Link } from '../routes'
+import Link from 'next/link'
 import { withBaseUrl } from '../util'
 import { useTheme } from './ThemeProvider'
 
@@ -61,7 +61,7 @@ const Header = props => {
     )
   }
   const brandLink = user ? (
-    <Link route="index" passHref>
+    <Link href="/" passHref>
       <NavbarBrand>{brandText}</NavbarBrand>
     </Link>
   ) : (
@@ -81,7 +81,7 @@ const Header = props => {
       <Collapse isOpen={isOpen.value} navbar>
         {user && user.isAdmin && (
           <Nav navbar>
-            <Link route="adminIndex" passHref>
+            <Link href="/admin" passHref>
               <NavLink>Admin</NavLink>
             </Link>
           </Nav>
@@ -89,7 +89,7 @@ const Header = props => {
         <Nav navbar className="ml-auto">
           {user && (
             <>
-              <Link route="userSettings" passHref>
+              <Link href="/settings" passHref>
                 <NavLink className="navbar-text mr-3">
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   {userName}

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { createOrUpdateUser, addJwtCookie } from './util'
-import * as safeAsync from '../middleware/safeAsync'
+import safeAsync from '../middleware/safeAsync'
 
 /**
  * This is used for user impersonation during local dev; it trusts that the
@@ -8,7 +8,7 @@ import * as safeAsync from '../middleware/safeAsync'
  *
  * DO NOT LET THIS ROUTE BE SERVED IN PRODUCTION.
  */
-module.exports = safeAsync(
+export default safeAsync(
   async (req: Request, res: Response): Promise<void> => {
     const { uid }: { uid: string } = req.body
 

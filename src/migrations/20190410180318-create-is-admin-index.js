@@ -1,9 +1,7 @@
-module.exports = {
-  up: (queryInterface, _Sequelize) => {
-    return queryInterface.addIndex('users', ['isAdmin'])
-  },
+export function up(queryInterface, _Sequelize) {
+  return queryInterface.addIndex('users', ['isAdmin'])
+}
 
-  down: (queryInterface, _Sequelize) => {
-    return queryInterface.removeIndex('users', ['isAdmin'])
-  },
+export function down(queryInterface, _Sequelize) {
+  return queryInterface.removeIndex('users', ['isAdmin'])
 }

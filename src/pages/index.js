@@ -5,7 +5,7 @@ import { Container, Row, Card, CardBody, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-import { Link } from '../routes'
+import Link from 'next/link'
 import {
   fetchCoursesRequest,
   fetchCourses,
@@ -90,13 +90,7 @@ class Index extends React.Component {
     if (this.props.courses && this.props.courses.length > 0) {
       courseButtons = this.props.courses.map(course => {
         return (
-          <Link
-            route="course"
-            params={{ id: course.id }}
-            key={course.id}
-            prefetch
-            passHref
-          >
+          <Link href={`/course/${course.id}`} key={course.id} prefetch passHref>
             <Button color="primary" tag="a" className="mr-3 mb-3" outline>
               {course.name}
             </Button>

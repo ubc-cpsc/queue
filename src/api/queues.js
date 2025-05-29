@@ -1,19 +1,19 @@
-const router = require('express').Router({
-  mergeParams: true,
-})
+import express from 'express'
+import { check, oneOf } from 'express-validator/check'
+import { matchedData } from 'express-validator/filter'
 
-const { check, oneOf } = require('express-validator/check')
-const { matchedData } = require('express-validator/filter')
-
-const {
+import {
   Queue,
   Course,
   ActiveStaff,
   Question,
   User,
   Sequelize,
-} = require('../models')
-const safeAsync = require('../middleware/safeAsync')
+} from '../models'
+import safeAsync from '../middleware/safeAsync'
+import util from './util'
+import requireCourseStaffForQueue from '../middleware/requireCourseStaffForQueue'
+import requireCourseStaff from '../middleware/requireCourseStaff'
 
 const {
   requireCourse,
@@ -22,10 +22,9 @@ const {
   failIfErrors,
   isUserStudent,
   filterConfidentialQueueQuestionsForUser,
-} = require('./util')
+} = util
 
-const requireCourseStaffForQueue = require('../middleware/requireCourseStaffForQueue')
-const requireCourseStaff = require('../middleware/requireCourseStaff')
+const router = express.Router({ mergeParams: true })
 
 function validateLocation(req, res, next) {
   check('location')
@@ -316,4 +315,4 @@ router.delete(
   })
 )
 
-module.exports = router
+export default router

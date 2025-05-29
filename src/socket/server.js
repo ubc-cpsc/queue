@@ -1,13 +1,11 @@
-const cookieParser = require('cookie-parser')
+import cookieParser from 'cookie-parser'
+import sequelizeStream from './sequelizeStream'
+import { logger } from '../util/logger'
+import { sequelize, Question, User, ActiveStaff, Queue } from '../models'
+import { getUserFromJwt, getAuthzForUser } from '../auth/util'
+import util from '../api/util'
 
-const sequelizeStream = require('./sequelizeStream')
-const { logger } = require('../util/logger')
-const { sequelize, Question, User, ActiveStaff, Queue } = require('../models')
-const { getUserFromJwt, getAuthzForUser } = require('../auth/util')
-const {
-  isUserStudent,
-  filterConfidentialQueueQuestionsForUser,
-} = require('../api/util')
+const { isUserStudent, filterConfidentialQueueQuestionsForUser } = util
 
 let io = null
 let queueNamespace = null
@@ -202,7 +200,7 @@ stream.on('data', data => {
   }
 })
 
-module.exports = newIo => {
+export default function(newIo) {
   io = newIo
 
   io.use(parseSocketCookies())

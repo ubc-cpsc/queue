@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import HTTPStatus from 'http-status'
 import { Button } from 'reactstrap'
 
-import { Link } from '../routes'
+import Link from 'next/link'
 import { useTheme } from './ThemeProvider'
 
 const styles = {
@@ -49,7 +49,7 @@ const Error = props => {
     <div style={styles.error}>
       <h1 className="display-2">{title}</h1>
       <h6>{message}</h6>
-      <Link passHref route="index">
+      <Link href="/" passHref>
         <Button
           outline
           color={isDarkMode ? 'light' : 'secondary'}

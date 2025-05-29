@@ -1,25 +1,27 @@
 /* eslint global-require: "off", no-console: "off" */
-import './dotenv'
-
 import { Server } from 'http'
-import * as io from 'socket.io'
-import * as nextJs from 'next'
+import io from 'socket.io'
+import next from 'next'
 import co from 'co'
 
-import * as app from './app'
+import app from './app'
 import { logger } from './util/logger'
 import * as models from './models'
 import * as migrations from './migrations/util'
-import routes from './routes'
-import * as serverSocket from './socket/server'
+import serverSocket from './socket/server'
 import { baseUrl } from './util'
+
+require('dotenv-flow').config({
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  default_node_env: 'development',
+})
 
 const prodEnvironments = ['staging', 'production']
 const DEV = prodEnvironments.indexOf(process.env.NODE_ENV as string) === -1
 const PORT = process.env.PORT || 3000
 
-const nextApp = nextJs({ dev: DEV, dir: DEV ? 'src' : 'build', quiet: true })
-const handler = routes.getRequestHandler(nextApp)
+const nextApp = next({ dev: DEV, dir: DEV ? 'src' : 'build', quiet: true })
+const handler = nextApp.getRequestHandler()
 
 /* eslint-disable func-names */
 co(function*() {
@@ -47,7 +49,9 @@ co(function*() {
   const socket = io(server, { path: `${baseUrl}/socket.io` })
   serverSocket(socket)
 
-  app.use(handler)
+  app.all('*', (req, res) => {
+    return handler(req, res)
+  })
 
   server.listen(PORT)
   logger.info(`Listening on ${PORT}`)

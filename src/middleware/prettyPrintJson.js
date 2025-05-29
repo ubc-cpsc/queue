@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+const prettyPrintJson = (req, res, next) => {
   res.json = body => {
     if (!res.get('Content-Type')) {
       res.set('Content-Type', 'application/json')
@@ -7,3 +7,5 @@ module.exports = (req, res, next) => {
   }
   next()
 }
+
+export default prettyPrintJson

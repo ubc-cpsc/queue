@@ -1,11 +1,12 @@
-const router = require('express').Router()
+import express from 'express'
+import util from './util'
+import { User, Course, Queue } from '../models'
+import requireAdmin from '../middleware/requireAdmin'
+import safeAsync from '../middleware/safeAsync'
 
-const { requireUser, failIfErrors, ApiError } = require('./util')
+const { requireUser, failIfErrors, ApiError } = util
 
-const { User, Course, Queue } = require('../models')
-
-const requireAdmin = require('../middleware/requireAdmin')
-const safeAsync = require('../middleware/safeAsync')
+const router = express.Router()
 
 // Get list of all users
 router.get('/', [requireAdmin], (req, res, _next) =>
@@ -151,4 +152,4 @@ router.delete(
   })
 )
 
-module.exports = router
+export default router

@@ -9,6 +9,8 @@ import makeStore from '../redux/makeStore'
 import AppContainer from '../components/AppContainer'
 import { ThemeProvider } from '../components/ThemeProvider'
 
+import '../components/darkmode.scss'
+
 // We add this during SSR in _document.js
 config.autoAddCss = false
 

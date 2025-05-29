@@ -1,6 +1,6 @@
-const { getAuthzForUser } = require('../auth/util')
+import { getAuthzForUser } from '../auth/util'
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   // Grab the user from the authentication stage
   const { userAuthn } = res.locals
 

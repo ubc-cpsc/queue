@@ -1,4 +1,4 @@
-module.exports = (sequelize, _DataTypes) => {
+export default (sequelize, _DataTypes) => {
   const obj = sequelize.define(
     'courseStaff',
     {},

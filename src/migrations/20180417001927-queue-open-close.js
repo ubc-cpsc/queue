@@ -1,13 +1,11 @@
-module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('queues', 'open', {
-      type: Sequelize.BOOLEAN,
-      defaultValue: true,
-      after: 'fixedLocation',
-    })
-  },
+export function up(queryInterface, Sequelize) {
+  return queryInterface.addColumn('queues', 'open', {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true,
+    after: 'fixedLocation',
+  })
+}
 
-  down: (queryInterface, _Sequelize) => {
-    return queryInterface.removeColumn('queues', 'open')
-  },
+export function down(queryInterface, _Sequelize) {
+  return queryInterface.removeColumn('queues', 'open')
 }

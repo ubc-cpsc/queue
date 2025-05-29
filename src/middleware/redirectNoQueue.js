@@ -1,7 +1,7 @@
-const { baseUrl } = require('../util')
-const { Queue } = require('../models')
+import { baseUrl } from '../util'
+import { Queue } from '../models'
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   const { queueId: qid } = req.params
   const firstQueue = await Queue.findOne({
     where: {

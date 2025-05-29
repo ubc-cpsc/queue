@@ -1,19 +1,21 @@
 /* eslint-env jest */
-const session = require('supertest-session')
-const models = require('../models')
-const { ApiError } = require('../api/util')
+import session from 'supertest-session'
+import models from '../models'
+import util from '../api/util'
 
-module.exports.TOKEN = '3b0886cd-84ef-4702-8016-cfa7e20418f9'
+const { ApiError } = util
 
-module.exports.setupTestDb = async () => {
+export const TOKEN = '3b0886cd-84ef-4702-8016-cfa7e20418f9'
+
+export const setupTestDb = async () => {
   await models.sequelize.sync()
 }
 
-module.exports.destroyTestDb = async () => {
+export const destroyTestDb = async () => {
   await models.sequelize.drop()
 }
 
-module.exports.createTestUsers = async () => {
+export const createTestUsers = async () => {
   await models.User.bulkCreate([
     { uid: 'dev@illinois.edu', isAdmin: true },
     { uid: 'admin@illinois.edu', universityName: 'Admin', isAdmin: true },
@@ -37,7 +39,7 @@ module.exports.createTestUsers = async () => {
   ])
 }
 
-module.exports.createTestTokens = async () => {
+export const createTestTokens = async () => {
   // Hash is for the following UUID:
   // 3b0886cd-84ef-4702-8016-cfa7e20418f9
   await models.AccessToken.bulkCreate([
@@ -49,7 +51,7 @@ module.exports.createTestTokens = async () => {
   ])
 }
 
-module.exports.createTestCourses = async () => {
+export const createTestCourses = async () => {
   await models.Course.bulkCreate([
     { name: 'CS225' },
     { name: 'CS241' },
@@ -58,7 +60,7 @@ module.exports.createTestCourses = async () => {
   ])
 }
 
-module.exports.createTestQueues = async () => {
+export const createTestQueues = async () => {
   await models.Queue.bulkCreate([
     {
       name: 'CS225 Queue',
@@ -98,7 +100,7 @@ module.exports.createTestQueues = async () => {
   ])
 }
 
-module.exports.createTestQuestions = async () => {
+export const createTestQuestions = async () => {
   await models.Question.bulkCreate([
     {
       queueId: 1,
@@ -138,10 +140,10 @@ module.exports.createTestQuestions = async () => {
   ])
 }
 
-module.exports.populateTestDb = async () => {
-  await module.exports.createTestUsers()
-  await module.exports.createTestTokens()
-  await module.exports.createTestCourses()
+export const populateTestDb = async () => {
+  await createTestUsers()
+  await createTestTokens()
+  await createTestCourses()
 
   const staff225 = await models.User.findOne({
     where: { uid: '225staff@illinois.edu' },
@@ -158,17 +160,17 @@ module.exports.populateTestDb = async () => {
   })
   await staff446.addStaffAssignment(3)
 
-  await module.exports.createTestQueues()
-  await module.exports.createTestQuestions()
+  await createTestQueues()
+  await createTestQuestions()
 }
 
-module.exports.requestAsUser = async (app, user) => {
+export const requestAsUser = async (app, user) => {
   const testSession = session(app)
   await testSession.post('/login/dev').send({ uid: user })
   return testSession
 }
 
-module.exports.expectNextCalledWithApiError = (next, statusCode) => {
+export const expectNextCalledWithApiError = (next, statusCode) => {
   expect(next).toHaveBeenCalledTimes(1)
   const arg = next.mock.calls[0][0]
   expect(arg).toBeInstanceOf(ApiError)

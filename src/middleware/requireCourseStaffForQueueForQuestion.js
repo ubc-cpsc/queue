@@ -1,7 +1,7 @@
-const { Course, Queue, Question } = require('../models')
-const { ApiError } = require('../api/util')
+import { Course, Queue, Question } from '../models'
+import { ApiError } from '../api/util'
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   if (!req.params.questionId) {
     next(new ApiError(400, 'Invalid question ID'))
     return

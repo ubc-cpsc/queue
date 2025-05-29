@@ -1,8 +1,11 @@
-const fs = require('fs')
-const path = require('path')
-const Sequelize = require('sequelize')
+import { readdirSync } from 'fs'
+import { join } from 'path'
+import Sequelize from 'sequelize'
 
-require('../dotenv')
+require('dotenv-flow').config({
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  default_node_env: 'development',
+})
 
 const CONFIG = {
   username: process.env.DB_USERNAME,
@@ -19,16 +22,16 @@ const CONFIG = {
  * @param  {[type]} sequelize [description]
  * @return {[type]}           [description]
  */
-module.exports.initSequelize = sequelize => {
+export function initSequelize(sequelize) {
   const models = {}
 
-  fs.readdirSync(__dirname)
+  readdirSync(__dirname)
     .filter(
       file =>
         file.indexOf('.') !== 0 && file.endsWith('.js') && file !== 'index.js'
     )
     .forEach(file => {
-      const model = sequelize.import(path.join(__dirname, file))
+      const model = sequelize.import(join(__dirname, file))
       const modelName = file.substring(0, file.indexOf('.js'))
       models[modelName] = model
     })
@@ -61,10 +64,13 @@ if (process.env.DATABASE_URL) {
   })
 }
 
-const models = module.exports.initSequelize(sequelize)
+const models = initSequelize(sequelize)
 
 Object.assign(module.exports, models)
 
-module.exports.sequelize = sequelize
-module.exports.Sequelize = Sequelize
-module.exports.models = models
+const _sequelize = sequelize
+export { _sequelize as sequelize }
+const _Sequelize = Sequelize
+export { _Sequelize as Sequelize }
+const _models = models
+export { _models as models }

@@ -1,5 +1,3 @@
-module.exports = (sequelize, _DataTypes) => {
-  const obj = sequelize.define('starredQueue', {})
-
-  return obj
+export default (sequelize, _DataTypes) => {
+  return sequelize.define('starredQueue', {})
 }

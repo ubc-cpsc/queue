@@ -15,16 +15,19 @@ import {
   FormFeedback,
 } from 'reactstrap'
 
-import constants from '../constants'
+import {
+  QUESTION_TOPIC_MAX_LENGTH,
+  QUESTION_LOCATION_MAX_LENGTH,
+} from '../constants'
 
 const fields = [
   {
     name: 'topic',
-    maxLength: constants.QUESTION_TOPIC_MAX_LENGTH,
+    maxLength: QUESTION_TOPIC_MAX_LENGTH,
   },
   {
     name: 'location',
-    maxLength: constants.QUESTION_LOCATION_MAX_LENGTH,
+    maxLength: QUESTION_LOCATION_MAX_LENGTH,
   },
 ]
 
@@ -46,11 +49,11 @@ class QuestionEdit extends React.Component {
     this.handleModalExit = this.handleModalExit.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.question) {
+  componentDidUpdate(prevProps) {
+    if (this.props.question && this.props.question !== prevProps.question) {
       this.setState({
-        location: nextProps.question.location,
-        topic: nextProps.question.topic,
+        location: this.props.question.location,
+        topic: this.props.question.topic,
         isFieldValid: {},
       })
     }

@@ -1,6 +1,6 @@
-const safeAsync = require('../middleware/safeAsync')
-const { withBaseUrl } = require('../util')
-const { getUserFromJwt } = require('../auth/util')
+import safeAsync from './safeAsync'
+import { withBaseUrl } from '../util'
+import { getUserFromJwt } from '../auth/util'
 
 // We'll assume that if a route is not Next.js statics, general statics, or
 // an API, then it will require auth
@@ -19,7 +19,7 @@ const checkPathAgainstWhitelist = (path, whitelist) => {
   return whitelist.some(base => path.indexOf(base) === 0)
 }
 
-module.exports = safeAsync(async (req, res, next) => {
+export default safeAsync(async (req, res, next) => {
   const { path } = req
   if (checkPathAgainstWhitelist(path, authnWhitelist)) {
     // This path hit the whitelist; we're good

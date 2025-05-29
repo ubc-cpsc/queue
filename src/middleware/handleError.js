@@ -1,6 +1,6 @@
-const { logger } = require('../util/logger')
+import { logger } from '../util/logger'
 
-module.exports = (err, req, res, _next) => {
+export default (err, req, res, _next) => {
   logger.error(err.stack)
   if (res.headersSent) {
     req.socket.destroy()

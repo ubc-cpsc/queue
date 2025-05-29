@@ -1,4 +1,4 @@
-const { Readable } = require('stream')
+import { Readable } from 'stream'
 
 // The following code is based on https://github.com/joeybaker/sequelize-stream,
 // with the only modification being that we also pass the `options` object from
@@ -72,7 +72,7 @@ const addHooks = ({ sequelize, stream }) => {
   )
 }
 
-module.exports = sequelize => {
+export default sequelize => {
   const stream = new Readable({
     objectMode: true,
     read() {},

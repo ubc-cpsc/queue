@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Container } from 'reactstrap'
 import { connect } from 'react-redux'
+import { useRouter } from 'next/router'
 
-import { Router } from '../routes'
 import {
   fetchQueue,
   fetchQueueRequest,
@@ -19,6 +19,7 @@ import { isUserCourseStaffForQueue, isUserAdmin } from '../selectors'
 
 const QueueSettings = props => {
   const [queueLoading, setQueueLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
     setQueueLoading(true)
@@ -37,7 +38,7 @@ const QueueSettings = props => {
   const deleteQueue = () => {
     const { id: queueId, courseId } = props.queue
     props.deleteQueue(courseId, queueId).then(() => {
-      Router.replaceRoute('index')
+      router.replace('/')
     })
   }
 

@@ -21,7 +21,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import getConfig from 'next/config'
 
-import constants from '../constants'
+import {
+  QUESTION_TOPIC_MAX_LENGTH,
+  QUESTION_NAME_MAX_LENGTH,
+  QUESTION_LOCATION_MAX_LENGTH,
+} from '../constants'
 import { CREATE_QUESTION } from '../constants/ActionTypes'
 import UserAutocomplete from './UserAutocomplete'
 
@@ -81,16 +85,16 @@ const NewQuestion = props => {
     if (!props.queue.fixedLocation) {
       newFieldErrors.location = validateField(
         locationInput.value,
-        constants.QUESTION_LOCATION_MAX_LENGTH
+        QUESTION_LOCATION_MAX_LENGTH
       )
     }
     newFieldErrors.name = validateField(
       nameInput.value,
-      constants.QUESTION_NAME_MAX_LENGTH
+      QUESTION_NAME_MAX_LENGTH
     )
     newFieldErrors.topic = validateField(
       topicInput.value,
-      constants.QUESTION_TOPIC_MAX_LENGTH
+      QUESTION_TOPIC_MAX_LENGTH
     )
     setFieldErrors(newFieldErrors)
     if (hasErrors(newFieldErrors)) return
@@ -236,10 +240,11 @@ const NewQuestion = props => {
                   {queue.fixedLocation ? (
                     <FormText>This is a fixed-location queue.</FormText>
                   ) : (
-                    <FormText>Please say whether you are waiting to
-                      meet <strong>in person</strong> or <strong>online</strong>.
-                      If your instructor requires it, also give the room
-                      number or online meeting URL.
+                    <FormText>
+                      Please say whether you are waiting to meet{' '}
+                      <strong>in person</strong> or <strong>online</strong>. If
+                      your instructor requires it, also give the room number or
+                      online meeting URL.
                     </FormText>
                   )}
                 </Col>

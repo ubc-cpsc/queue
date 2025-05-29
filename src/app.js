@@ -1,11 +1,32 @@
 /* eslint global-require: "off", no-console: "off" */
-const app = require('express')()
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
-const rewrite = require('express-urlrewrite')
+import express from 'express'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import rewrite from 'express-urlrewrite'
 
-const { logger } = require('./util/logger')
-const { baseUrl, isDev } = require('./util')
+import { logger } from './util/logger'
+import { baseUrl, isDev } from './util'
+
+import prettyPrintJson from './middleware/prettyPrintJson'
+import authDev from './auth/dev'
+import authShibboleth from './auth/shibboleth'
+import authLogout from './auth/logout'
+import authnToken from './middleware/authnToken'
+import authnJwt from './middleware/authnJwt'
+import checkAuthn from './middleware/checkAuthn'
+import authz from './middleware/authz'
+import redirectIfNeedsAuthn from './middleware/redirectIfNeedsAuthn'
+import users from './api/users'
+import tokens from './api/tokens'
+import courses from './api/courses'
+import queues from './api/queues'
+import questions from './api/questions'
+import autocomplete from './api/autocomplete'
+import courseShortcodes from './middleware/courseShortcodes'
+import redirectNoQueue from './middleware/redirectNoQueue'
+import handleError from './middleware/handleError'
+
+const app = express()
 
 // We're probably running behind a proxy - trust them and derive information
 // from the X-Forwarded-* headers: https://expressjs.com/en/guide/behind-proxies.html
@@ -20,7 +41,7 @@ app.use(rewrite(`${baseUrl}/_next/*`, '/_next/$1'))
 app.use(rewrite(`${baseUrl}/static/*`, '/static/$1'))
 
 // Prettify all json by default
-app.use(require('./middleware/prettyPrintJson'))
+app.use(prettyPrintJson)
 
 // Authentication
 // All auth is handled by the /login route. In production, /login/shib is
@@ -30,34 +51,31 @@ app.use(require('./middleware/prettyPrintJson'))
 // then establish our own session with them, which can persist beyond Shib's
 // authentication restrictions.
 if (isDev) {
-  app.use(`${baseUrl}/login/dev`, require('./auth/dev'))
+  app.use(`${baseUrl}/login/dev`, authDev.default)
 }
-app.use(`${baseUrl}/login/shib`, require('./auth/shibboleth'))
-app.use(`${baseUrl}/logout`, require('./auth/logout'))
+app.use(`${baseUrl}/login/shib`, authShibboleth.default)
+app.use(`${baseUrl}/logout`, authLogout.default)
 
-app.use(`${baseUrl}/api`, require('./middleware/authnToken'))
-app.use(`${baseUrl}/api`, require('./middleware/authnJwt'))
-app.use(`${baseUrl}/api`, require('./middleware/checkAuthn'))
-app.use(`${baseUrl}/api`, require('./middleware/authz'))
+app.use(`${baseUrl}/api`, authnToken.default)
+app.use(`${baseUrl}/api`, authnJwt.default)
+app.use(`${baseUrl}/api`, checkAuthn.default)
+app.use(`${baseUrl}/api`, authz.default)
 
 // This will selectively send redirects if the user needs to (re)authenticate
 // Useful mostly on initial page load - avoids having to detect that we
 // aren't authed on the client and redirect there.
-app.use(`${baseUrl}/`, require('./middleware/redirectIfNeedsAuthn'))
+app.use(`${baseUrl}/`, redirectIfNeedsAuthn.default)
 
 // API routes
-app.use(`${baseUrl}/api/users`, require('./api/users'))
-app.use(`${baseUrl}/api/tokens`, require('./api/tokens'))
-app.use(`${baseUrl}/api/courses`, require('./api/courses'))
-app.use(`${baseUrl}/api/queues`, require('./api/queues'))
-app.use(`${baseUrl}/api/questions`, require('./api/questions'))
-app.use(`${baseUrl}/api/courses/:courseId/queues`, require('./api/queues'))
-app.use(
-  `${baseUrl}/api/courses/:courseId/queues/:queueId/questions`,
-  require('./api/questions')
-)
-app.use(`${baseUrl}/api/queues/:queueId/questions`, require('./api/questions'))
-app.use(`${baseUrl}/api/autocomplete`, require('./api/autocomplete'))
+app.use(`${baseUrl}/api/users`, users)
+app.use(`${baseUrl}/api/tokens`, tokens)
+app.use(`${baseUrl}/api/courses`, courses)
+app.use(`${baseUrl}/api/queues`, queues)
+app.use(`${baseUrl}/api/questions`, questions)
+app.use(`${baseUrl}/api/courses/:courseId/queues`, queues)
+app.use(`${baseUrl}/api/courses/:courseId/queues/:queueId/questions`, questions)
+app.use(`${baseUrl}/api/queues/:queueId/questions`, questions)
+app.use(`${baseUrl}/api/autocomplete`, autocomplete)
 
 // Use special not-found/error middleware for the API
 app.use(`${baseUrl}/api`, (err, _req, res, _next) => {
@@ -75,12 +93,12 @@ app.use(`${baseUrl}/api`, (_req, res, _next) => {
 })
 
 // Support for course shortcodes
-app.use(`${baseUrl}/:courseCode`, require('./middleware/courseShortcodes'))
+app.use(`${baseUrl}/:courseCode`, courseShortcodes.default)
 
 // Support for redirects of nonexistent queues
-app.use(`${baseUrl}/queue/:queueId`, require('./middleware/redirectNoQueue'))
+app.use(`${baseUrl}/queue/:queueId`, redirectNoQueue.default)
 
 // Error handling! This middleware should always be the last one in the chain.
-app.use(require('./middleware/handleError'))
+app.use(handleError.default)
 
-module.exports = app
+export default app

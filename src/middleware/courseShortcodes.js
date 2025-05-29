@@ -1,7 +1,7 @@
-const { baseUrl } = require('../util')
-const { Course, Queue } = require('../models')
+import { baseUrl } from '../util'
+import { Course, Queue } from '../models'
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   const { courseCode: shortcode } = req.params
   const course = await Course.findOne({
     where: {

@@ -1,7 +1,7 @@
-const { Course, Queue } = require('../models')
-const { ApiError } = require('../api/util')
+import { Course, Queue } from '../models'
+import { ApiError } from '../api/util'
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
   if (res.locals.userAuthz.isAdmin) {
     // Admins can do anything course staff can!
     next()

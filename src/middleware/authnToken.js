@@ -1,10 +1,10 @@
-const crypto = require('crypto')
+import { createHash } from 'crypto'
 
-const { ApiError } = require('../api/util')
-const safeAsync = require('../middleware/safeAsync')
-const { AccessToken, User } = require('../models')
+import { ApiError } from '../api/util'
+import safeAsync from './safeAsync'
+import { AccessToken, User } from '../models'
 
-module.exports = safeAsync(async (req, res, next) => {
+export default safeAsync(async (req, res, next) => {
   if (res.locals.userAuthn) {
     // Something else in the chain already handled authn
     next()
@@ -24,8 +24,7 @@ module.exports = safeAsync(async (req, res, next) => {
     return
   }
 
-  const tokenHash = crypto
-    .createHash('sha256')
+  const tokenHash = createHash('sha256')
     .update(token, 'utf8')
     .digest('hex')
 

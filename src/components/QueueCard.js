@@ -12,11 +12,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 
+import Link from 'next/link'
 import {
   addStarredByUser as addStarredByUserAction,
   removeStarredByUser as removeStarredByUserAction,
 } from '../actions/user'
-import { Link } from '../routes'
 import ShowForCourseStaff from './ShowForCourseStaff'
 
 const QueueCard = ({
@@ -73,7 +73,7 @@ const QueueCard = ({
           </span>
           <div>
             <ShowForCourseStaff courseId={queue.courseId}>
-              <Link passHref route="queueSettings" params={{ id: queue.id }}>
+              <Link href={`/queue/${queue.id}/settings`} passHref>
                 {/* eslint-disable-next-line */}
                 <a className="p-1" onClick={e => e.stopPropagation()}>
                   <span className="sr-only">Queue settings</span>

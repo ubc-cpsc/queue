@@ -42,12 +42,11 @@ export default function(AuthedComponent, permissions) {
       }
     }
 
-    componentWillReceiveProps(nextProps) {
-      const { user } = nextProps
-      if (user) {
+    componentDidUpdate(prevProps) {
+      if (this.props.user && this.props.user !== prevProps.user) {
         this.setState({
           isLoading: false,
-          isAuthed: this.checkAuthz(user),
+          isAuthed: this.checkAuthz(this.props.user),
         })
       }
     }

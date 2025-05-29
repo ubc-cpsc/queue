@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardHeader, CardTitle, CardBody, Button } from 'reactstrap'
 
-import { Link } from '../../routes'
+import Link from 'next/link'
 
 const ThemePreviewPanel = () => {
   return (
@@ -17,7 +17,7 @@ const ThemePreviewPanel = () => {
           theme preview page to see a variety of Bootstrap components and how
           they look under each theme.
         </p>
-        <Link passHref route="adminThemePreview">
+        <Link href="/admin/theme" passHref>
           <Button tag="a" color="primary">
             Preview themes
           </Button>

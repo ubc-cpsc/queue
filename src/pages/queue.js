@@ -20,7 +20,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { faStar as farStar } from '@fortawesome/free-regular-svg-icons'
 
-import { Link } from '../routes'
+import Link from 'next/link'
 import { fetchQueue } from '../actions/queue'
 import { fetchCourse } from '../actions/course'
 import { connectToQueue, disconnectFromQueue } from '../socket/client'
@@ -58,7 +58,7 @@ const buildQueueName = (queue, course) => {
     <>
       {course && (
         <>
-          <Link route="course" params={{ id: course.id }}>
+          <Link href={`/course/${course.id}`}>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a>{course.name}</a>
           </Link>

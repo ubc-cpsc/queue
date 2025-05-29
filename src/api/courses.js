@@ -1,16 +1,17 @@
-const router = require('express').Router({
-  mergeParams: true,
-})
+import express from 'express'
+import { check } from 'express-validator/check'
+import { matchedData } from 'express-validator/filter'
+import moment from 'moment'
 
-const { check } = require('express-validator/check')
-const { matchedData } = require('express-validator/filter')
-const moment = require('moment')
+import { Course, Queue, Question, User, Sequelize } from '../models'
+import util from './util'
+import requireAdmin from '../middleware/requireAdmin'
+import requireCourseStaff from '../middleware/requireCourseStaff'
+import safeAsync from '../middleware/safeAsync'
 
-const { Course, Queue, Question, User, Sequelize } = require('../models')
-const { requireCourse, requireUser, failIfErrors, ApiError } = require('./util')
-const requireAdmin = require('../middleware/requireAdmin')
-const requireCourseStaff = require('../middleware/requireCourseStaff')
-const safeAsync = require('../middleware/safeAsync')
+const { requireCourse, requireUser, failIfErrors, ApiError } = util
+
+const router = express.Router({ mergeParams: true })
 
 const getCsv = questions => {
   const columns = new Set([
@@ -339,4 +340,4 @@ router.delete(
   })
 )
 
-module.exports = router
+export default router

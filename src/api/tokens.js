@@ -1,16 +1,15 @@
-const router = require('express').Router({
-  mergeParams: true,
-})
-const uuidv4 = require('uuid/v4')
-const crypto = require('crypto')
+import express from 'express'
+import { v4 as uuidv4 } from 'uuid'
+import crypto from 'crypto'
+import { check } from 'express-validator/check'
+import { matchedData } from 'express-validator/filter'
+import util from './util'
+import { AccessToken } from '../models'
+import safeAsync from '../middleware/safeAsync'
 
-const { check } = require('express-validator/check')
-const { matchedData } = require('express-validator/filter')
+const { ApiError, failIfErrors } = util
 
-const { ApiError, failIfErrors } = require('./util')
-
-const { AccessToken } = require('../models')
-const safeAsync = require('../middleware/safeAsync')
+const router = express.Router({ mergeParams: true })
 
 // Get all tokens for authenticated user
 router.get(
@@ -88,4 +87,4 @@ router.delete(
   })
 )
 
-module.exports = router
+export default router

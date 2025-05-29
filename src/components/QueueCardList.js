@@ -2,11 +2,12 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Col, Card, CardBody } from 'reactstrap'
 
-import { Router } from '../routes'
-
+import { useRouter } from 'next/router'
 import QueueCard from './QueueCard'
 
 const QueueCardList = props => {
+  const router = useRouter()
+
   const queueSorter = (l, r) => {
     const queueL = props.queues[l]
     const queueR = props.queues[r]
@@ -26,11 +27,7 @@ const QueueCardList = props => {
       return 0
     }
 
-    if (courseNameL < courseNameR) {
-      return -1
-    }
-
-    return 1
+    return courseNameL < courseNameR ? -1 : 1
   }
 
   // eslint-disable-next-line react/prop-types
@@ -48,13 +45,13 @@ const QueueCardList = props => {
 
   let queues
   if (props.queueIds && props.queueIds.length > 0) {
-    const handleQueueClick = id => {
-      Router.pushRoute('queue', { id })
+    const handleQueueClick = (id, router) => {
+      router.push('queue', { id })
     }
 
-    const handleQueueKeyPress = (e, id) => {
+    const handleQueueKeyPress = (e, id, router) => {
       if (e.key === 'Enter') {
-        handleQueueClick(id)
+        handleQueueClick(id, router)
       }
     }
 
@@ -71,8 +68,8 @@ const QueueCardList = props => {
             open={props.openQueue}
             courseName={props.showCourseName ? courseName : null}
             isStarred={isStarred}
-            onClick={() => handleQueueClick(queue.id)}
-            onKeyPress={e => handleQueueKeyPress(e, queue.id)}
+            onClick={() => handleQueueClick(queue.id, router)}
+            onKeyPress={e => handleQueueKeyPress(e, queue.id, router)}
             tabIndex="0"
           />
         </CardCol>

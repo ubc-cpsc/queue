@@ -1,13 +1,15 @@
-const router = require('express').Router({
-  mergeParams: true,
-})
+import express from 'express'
+import { check } from 'express-validator/check'
+import { matchedData } from 'express-validator/filter'
+import axios from 'axios'
 
-const { check } = require('express-validator/check')
-const { matchedData } = require('express-validator/filter')
-const axios = require('axios')
+import constants from '../constants'
+import { Course, Queue, Question, User } from '../models/'
+import util from './util'
+import requireCourseStaffForQueue from '../middleware/requireCourseStaffForQueue'
+import requireCourseStaffForQueueForQuestion from '../middleware/requireCourseStaffForQueueForQuestion'
+import safeAsync from '../middleware/safeAsync'
 
-const constants = require('../constants')
-const { Course, Queue, Question, User } = require('../models/')
 const {
   requireQueue,
   requireQueueForQuestion,
@@ -16,10 +18,9 @@ const {
   isUserStudent,
   filterConfidentialQueueQuestionsForUser,
   ApiError,
-} = require('./util')
-const requireCourseStaffForQueue = require('../middleware/requireCourseStaffForQueue')
-const requireCourseStaffForQueueForQuestion = require('../middleware/requireCourseStaffForQueueForQuestion')
-const safeAsync = require('../middleware/safeAsync')
+} = util
+
+const router = express.Router({ mergeParams: true })
 
 /* eslint-disable no-param-reassign */
 function modifyBeingAnswered(question, answering) {
@@ -427,4 +428,4 @@ router.delete(
   })
 )
 
-module.exports = router
+export default router

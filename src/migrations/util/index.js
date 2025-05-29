@@ -1,16 +1,16 @@
-const Umzug = require('umzug')
-const Sequelize = require('sequelize')
-const mysql = require('mysql2/promise')
-const path = require('path')
+import Umzug from 'umzug'
+import Sequelize from 'sequelize'
+import { createConnection } from 'mysql2/promise'
+import { resolve } from 'path'
 
-const { logger } = require('../../util/logger')
-const models = require('../../models')
+import { logger } from '../../util/logger'
+import { initSequelize } from '../../models'
 
 /**
  * Executes all pending migrations.
  * @return {Promise} A promise that resolves when all migrations are complete
  */
-module.exports.performMigrations = async sequelize => {
+export async function performMigrations(sequelize) {
   logger.info('Running migrations...')
   const umzug = new Umzug({
     storage: 'sequelize',
@@ -18,7 +18,7 @@ module.exports.performMigrations = async sequelize => {
       sequelize,
     },
     migrations: {
-      path: path.resolve(__dirname, '..'),
+      path: resolve(__dirname, '..'),
       params: [sequelize.getQueryInterface(), Sequelize],
     },
   })
@@ -33,9 +33,9 @@ module.exports.performMigrations = async sequelize => {
  * our migration.
  * @return {Promise} A promise that resolves with the diff when the comparisons are complete
  */
-module.exports.createVerificationDatabases = async () => {
+export async function createVerificationDatabases() {
   // We'll skirt around Sequelize for a hot minute and do some manual setup
-  const testConnection = await mysql.createConnection({
+  const testConnection = await createConnection({
     host: 'localhost',
     user: 'queue',
     charset: 'UTF8MB4_GENERAL_CI',
@@ -68,10 +68,10 @@ module.exports.createVerificationDatabases = async () => {
   })
 
   // Run migrations on the appropriate database
-  await module.exports.performMigrations(migrationSequelize)
+  await performMigrations(migrationSequelize)
 
   // Run the Sequelize "sync" on the other database
-  models.initSequelize(syncedSequelize)
+  initSequelize(syncedSequelize)
   await syncedSequelize.sync({ force: true })
 
   // Delete the migrations metadata table before diffing
@@ -82,9 +82,9 @@ module.exports.createVerificationDatabases = async () => {
   migrationSequelize.close()
 }
 
-module.exports.destroyVerificationDatabases = async () => {
+export async function destroyVerificationDatabases() {
   // We'll skirt around Sequelize for a hot minute and do some manual setup
-  const testConnection = await mysql.createConnection({
+  const testConnection = await createConnection({
     host: 'localhost',
     user: 'queue',
     charset: 'UTF8MB4_GENERAL_CI',
