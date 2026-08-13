@@ -30,7 +30,8 @@ module.exports = {
         },
       })
       .then(() => {
-        queryInterface.addConstraint('courseStaff', ['courseId', 'userId'], {
+        return queryInterface.addConstraint('courseStaff', {
+          fields: ['courseId', 'userId'],
           type: 'primary key',
         })
       })

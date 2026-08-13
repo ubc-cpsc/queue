@@ -6,7 +6,8 @@ module.exports = {
       await queryInterface.removeConstraint('users', 'netid')
     }
     await queryInterface.renameColumn('users', 'netid', 'uid')
-    await queryInterface.addConstraint('users', ['uid'], {
+    await queryInterface.addConstraint('users', {
+      fields: ['uid'],
       type: 'unique',
       name: 'uid',
     })

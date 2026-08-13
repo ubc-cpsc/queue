@@ -32,7 +32,8 @@ module.exports = {
         },
       })
       .then(() => {
-        queryInterface.addConstraint('starredQueues', ['queueId', 'userId'], {
+        return queryInterface.addConstraint('starredQueues', {
+          fields: ['queueId', 'userId'],
           type: 'primary key',
         })
       })

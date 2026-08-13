@@ -28,7 +28,8 @@ module.exports.initSequelize = sequelize => {
         file.indexOf('.') !== 0 && file.endsWith('.js') && file !== 'index.js'
     )
     .forEach(file => {
-      const model = sequelize.import(path.join(__dirname, file))
+      const defineModel = require(path.join(__dirname, file))
+      const model = defineModel(sequelize, Sequelize.DataTypes)
       const modelName = file.substring(0, file.indexOf('.js'))
       models[modelName] = model
     })
