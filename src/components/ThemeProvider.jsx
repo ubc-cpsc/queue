@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useLocalStorage from '@illinois/react-use-local-storage'
 
-import './darkmode.scss'
+import './darkmode.css'
 
 const ThemeContext = React.createContext()
 const useTheme = () => React.useContext(ThemeContext)
