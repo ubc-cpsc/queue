@@ -44,7 +44,7 @@
     "json-patch": "^0.7.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.30.1",
-    "mysql2": "^1.6.5",
+    "mysql2": "3.23.2",
     "next": "^8.0.4",
     "next-cookies": "^1.1.2",
     "next-page-transitions": "^1.0.0-beta.2",
@@ -70,7 +70,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "sequelize": "^5.3.4",
+    "sequelize": "6.37.8",
     "socket.io": "^2.5.1",
     "socket.io-client": "^2.2.0",
     "styled-jsx": "^3.2.1",
@@ -123,7 +123,7 @@
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.1.0",
-    "typescript": "^3.4.4"
+    "typescript": "4.1.6"
   },
   "jest": {
     "setupFilesAfterEnv": [
